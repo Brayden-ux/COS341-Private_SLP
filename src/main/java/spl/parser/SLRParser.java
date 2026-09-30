@@ -3,6 +3,7 @@ package spl.parser;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+
 import spl.grammar.Production;
 import spl.grammar.SPLGrammar;
 import spl.grammar.Terminal;
@@ -49,6 +50,18 @@ public final class SLRParser {
         }
     };
 
+	private static final SyntaxTreeNode ENDMARKER = new SyntaxTreeNode(-2) {
+        @Override
+        public String contents() {
+            return "$";
+        }
+
+        @Override
+        public void accept(spl.tree.TreeVisitor v) {
+            // sentinel: never part of the output tree
+        }
+    };
+
     public SyntaxTree parse() {
         stack.push(0, BOTTOM);
         while (true) {
@@ -81,6 +94,12 @@ public final class SLRParser {
     }
 
     private void shift(Token t, int target) {
+		if (t.getType() == spl.lexer.TokenType.EOF) {
+            stack.push(target, ENDMARKER);
+            lexer.nextToken();
+            return;
+        }
+
         int id = ids.newId();
         LeafNode leaf = new LeafNode(id, t);
         allNodes.put(id, leaf);
@@ -97,6 +116,9 @@ public final class SLRParser {
         if (p.getLhs().getName().equals("SPL_PROG")) {
             RootNode r = new RootNode(id, p.getLhs());
             for (SyntaxTreeNode c : children) {
+				if ( c == ENDMARKER ){
+					continue;
+				}
                 r.addChild(c.getId());
                 c.setParent(id);
             }
