@@ -14,18 +14,27 @@ import spl.table.ParseTable;
 import spl.table.SLRTableGenerator;
 import spl.tree.SyntaxTree;
 import spl.tree.XmlTreeWriter;
+import spl.semantic.NameAnalyzer;
+import spl.semantic.SemanticError;
+import spl.semantic.SymbolTable;
 
 /** Entry point: reads an SPL source file, parses it, and writes tree.xml. */
 public final class SPLCompiler {
 
     public static void main(String[] args) {
-        if (args.length < 1) {
-            System.err.println("Usage: java -jar spl-slr-parser.jar <SPL.txt> [tree.xml]");
+        boolean dumpSymbols = false;
+        java.util.List<String> positional = new java.util.ArrayList<>();
+        for (String a : args) {
+            if (a.equals("--dump-symbols")) dumpSymbols = true;
+            else positional.add(a);
+        }
+        if (positional.size() < 1) {
+            System.err.println("Usage: java -jar spl-slr-parser.jar <SPL.txt> [tree.xml] [--dump-symbols]");
             System.exit(2);
         }
-        String source = readSource(args[0]);
-        String outputPath = args.length >= 2 ? args[1] : "tree.xml";
-        int code = run(source, outputPath);
+        String source = readSource(positional.get(0));
+        String outputPath = positional.size() >= 2 ? positional.get(1) : "tree.xml";
+        int code = run(source, outputPath, dumpSymbols);
         System.exit(code);
     }
 
@@ -39,7 +48,7 @@ public final class SPLCompiler {
         }
     }
 
-    private static int run(String source, String outputPath) {
+    private static int run(String source, String outputPath, boolean dumpSymbols) {
         ErrorReporter reporter = new ErrorReporter();
 
         SPLGrammar grammar = new SPLGrammar().build().augment();
@@ -69,6 +78,19 @@ public final class SPLCompiler {
             }
             new XmlTreeWriter().write(tree, outputPath);
             System.out.println("Parse successful. Syntax tree written to " + outputPath);
+
+            // Phase 2a: names and scopes. Silent when everything is correct.
+            NameAnalyzer names = new NameAnalyzer(tree);
+            SymbolTable symbols = names.analyze();
+            if (names.hasErrors()) {
+                for (SemanticError e : names.getErrors()) {
+                    System.err.println(e.format());
+                }
+                return 1;
+            }
+            if (dumpSymbols) {
+                System.out.print(symbols.dump());
+            }
             return 0;
         } catch (ParseException e) {
             reporter.printAll();
