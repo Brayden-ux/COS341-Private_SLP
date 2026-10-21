@@ -1,0 +1,5 @@
+#x #y :
+num #add1 ( #a ) { : : return ( add ( #a 1 ) ) } :
+#x = 3 ;
+#y = #add1 ( #x ) ;
+if eq ( #x 3 ) then { print ( #y ) ; } else { nop ; } ;

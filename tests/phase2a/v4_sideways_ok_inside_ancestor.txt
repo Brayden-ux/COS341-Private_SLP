@@ -1,0 +1,4 @@
+: num #f ( ) { :
+  num #g ( ) { #x : num #j ( ) { : : #x = 1 ; return ( #x ) } : #x = 2 ; return ( #x ) }
+  num #h ( ) { #x : num #k ( ) { : : #x = 1 ; return ( #x ) } : return ( 1 ) }
+  : return ( 1 ) } :
