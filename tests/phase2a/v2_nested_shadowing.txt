@@ -1,0 +1,8 @@
+#x #y :
+void #f ( #p ) { #x #q :
+  num #g ( #a ) { #x : : #x = #a ; return ( #x ) }
+  void #h ( ) { #z : : #z = #q ; return }
+  :
+  #x = 1 ; #q = #g ( #p ) ; #h ( ) ; return }
+num #k ( ) { : : return ( 1 ) } :
+#y = 2 ; #x = #k ( ) ; #f ( #y ) ;
