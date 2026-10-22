@@ -1,0 +1,28 @@
+std::cout << "hello" ;
+/* nop */ ;
+/* "a,comment.here" */ ;
+int v3 ;
+v3 = 42 ;
+sys1 = v3 ;
+int v4 ;
+v4 = sys1 ;
+std::cout << v4 ;
+int v5 ;
+v5 = sys1 ;
+sys2 = v5 ;
+int v6 ;
+v6 = 7 ;
+sys1 = v6 ;
+std::cout << "," ;
+int v7 ;
+v7 = sys2 ;
+std::cout << v7 ;
+std::cout << "," ;
+int v8 ;
+v8 = sys1 ;
+std::cout << v8 ;
+std::cout << "," ;
+int v9 ;
+v9 = 0 ;
+std::cout << v9 ;
+/* end */

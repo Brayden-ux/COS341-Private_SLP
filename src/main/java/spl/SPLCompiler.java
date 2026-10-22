@@ -3,6 +3,7 @@ package spl;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import spl.codegen.CodeGenerator;
 import spl.grammar.FirstFollowSets;
 import spl.grammar.SPLGrammar;
 import spl.lexer.Lexer;
@@ -19,7 +20,7 @@ import spl.semantic.SemanticError;
 import spl.semantic.SymbolTable;
 import spl.semantic.TypeAnalyzer;
 
-/** Entry point: reads an SPL source file, parses it, and writes tree.xml. */
+/** Entry point: reads an SPL source file, parses and checks it, and writes tree.xml and the generated code. */
 public final class SPLCompiler {
 
     public static void main(String[] args) {
@@ -32,12 +33,13 @@ public final class SPLCompiler {
             else positional.add(a);
         }
         if (positional.size() < 1) {
-            System.err.println("Usage: java -jar spl-slr-parser.jar <SPL.txt> [tree.xml] [--dump-symbols] [--dump-types]");
+            System.err.println("Usage: java -jar spl-slr-parser.jar <SPL.txt> [tree.xml] [code.txt] [--dump-symbols] [--dump-types]");
             System.exit(2);
         }
         String source = readSource(positional.get(0));
         String outputPath = positional.size() >= 2 ? positional.get(1) : "tree.xml";
-        int code = run(source, outputPath, dumpSymbols, dumpTypes);
+        String codePath = positional.size() >= 3 ? positional.get(2) : "code.txt";
+        int code = run(source, outputPath, codePath, dumpSymbols, dumpTypes);
         System.exit(code);
     }
 
@@ -51,7 +53,7 @@ public final class SPLCompiler {
         }
     }
 
-    private static int run(String source, String outputPath, boolean dumpSymbols, boolean dumpTypes) {
+    private static int run(String source, String outputPath, String codePath, boolean dumpSymbols, boolean dumpTypes) {
         ErrorReporter reporter = new ErrorReporter();
 
         SPLGrammar grammar = new SPLGrammar().build().augment();
@@ -108,8 +110,10 @@ public final class SPLCompiler {
                 System.out.print(types.dump());
             }
 
-            // Phase 3a: the code generator plugs in here. It gets the syntax tree, the
-            // symbol table (internal names, fresh names) and the type analyser (typ).
+            // Phase 3a: code generation for the main ALGO (functions and calls follow in 3b).
+            String target = new CodeGenerator(tree, symbols, types).generate();
+            Files.writeString(Path.of(codePath), target);
+            System.out.println("Code generated. Target code written to " + codePath);
             return 0;
         } catch (ParseException e) {
             reporter.printAll();

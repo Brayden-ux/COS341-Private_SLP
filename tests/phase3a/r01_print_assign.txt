@@ -1,0 +1,15 @@
+#x #y :
+:
+print "hello" ;
+nop ;
+comment "a,comment.here" ;
+#x = 42 ;
+print ( #x ) ;
+#y = #x ;
+#x = 7 ;
+print "," ;
+print ( #y ) ;
+print "," ;
+print ( #x ) ;
+print "," ;
+print ( 0 ) ;

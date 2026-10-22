@@ -1,0 +1,11 @@
+#a #b :
+:
+#a = 7 ;
+#b = 2 ;
+print ( div ( #a #b ) ) ; print "," ;
+print ( div ( 1 4 ) ) ; print "," ;
+print ( mul ( 2.5 -1.5 ) ) ; print "," ;
+print ( add ( 0.25 0.5 ) ) ; print "," ;
+print ( neg ( div ( #a 0.5 ) ) ) ; print "," ;
+print ( sub ( 10 div ( 9 3 ) ) ) ; print "," ;
+print ( -9.01 ) ;

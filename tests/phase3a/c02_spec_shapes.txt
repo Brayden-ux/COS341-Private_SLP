@@ -1,0 +1,13 @@
+#x #y :
+:
+print "s" ;
+print ( #x ) ;
+nop ;
+comment "c" ;
+#x = add ( #y 1 ) ;
+#y = neg ( #x ) ;
+if not ( eq ( #x #y ) ) then { nop ; } else { } ;
+until or ( larger ( #x 1 ) lesser ( #x 0 ) ) do { nop ; } ;
+while and ( eq ( #x 1 ) eq ( #y 2 ) ) do { } ;
+do { nop ; } while eq ( #x 1 ) ;
+do { } until eq ( #x 1 ) ;

@@ -1,0 +1,19 @@
+#a #b #c :
+:
+#a = 17 ;
+#b = 5 ;
+print ( add ( #a #b ) ) ; print "," ;
+print ( sub ( #a #b ) ) ; print "," ;
+print ( sub ( #b #a ) ) ; print "," ;
+print ( mul ( #a #b ) ) ; print "," ;
+print ( mod ( #a #b ) ) ; print "," ;
+print ( neg ( #a ) ) ; print "," ;
+print ( neg ( neg ( #b ) ) ) ; print "," ;
+print ( mod ( neg ( #a ) #b ) ) ; print "," ;
+#c = mul ( add ( #a 3 ) sub ( #b neg ( 2 ) ) ) ;
+print ( #c ) ; print "," ;
+#c = sub ( sub ( 100 #c ) mod ( #c 9 ) ) ;
+print ( #c ) ; print "," ;
+print ( add ( -3 4 ) ) ; print "," ;
+#a = add ( #a #a ) ;
+print ( #a ) ;

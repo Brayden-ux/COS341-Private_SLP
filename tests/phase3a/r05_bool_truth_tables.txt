@@ -1,0 +1,28 @@
+#a #b :
+:
+#a = 0 ;
+while lesser ( #a 2 ) do {
+  #b = 0 ;
+  while lesser ( #b 2 ) do {
+    print ( #a ) ; print ( #b ) ; print ":" ;
+    if and ( eq ( #a 1 ) eq ( #b 1 ) ) then { print "1" ; } else { print "0" ; } ;
+    if or ( eq ( #a 1 ) eq ( #b 1 ) ) then { print "1" ; } else { print "0" ; } ;
+    if not ( eq ( #a 1 ) ) then { print "1" ; } else { print "0" ; } ;
+    if not ( not ( eq ( #a 1 ) ) ) then { print "1" ; } else { print "0" ; } ;
+    if not ( and ( eq ( #a 1 ) eq ( #b 1 ) ) ) then { print "1" ; } else { print "0" ; } ;
+    if not ( or ( eq ( #a 1 ) eq ( #b 1 ) ) ) then { print "1" ; } else { print "0" ; } ;
+    if and ( not ( eq ( #a 1 ) ) eq ( #b 1 ) ) then { print "1" ; } else { print "0" ; } ;
+    if and ( eq ( #a 1 ) not ( eq ( #b 1 ) ) ) then { print "1" ; } else { print "0" ; } ;
+    if or ( not ( eq ( #a 1 ) ) not ( eq ( #b 1 ) ) ) then { print "1" ; } else { print "0" ; } ;
+    if and ( or ( eq ( #a 1 ) eq ( #b 1 ) ) not ( and ( eq ( #a 1 ) eq ( #b 1 ) ) ) ) then { print "1" ; } else { print "0" ; } ;
+    if or ( and ( eq ( #a 1 ) eq ( #b 1 ) ) and ( not ( eq ( #a 1 ) ) not ( eq ( #b 1 ) ) ) ) then { print "1" ; } else { print "0" ; } ;
+    if and ( eq ( #a 1 ) and ( eq ( #b 1 ) not ( eq ( #a 1 ) ) ) ) then { print "1" ; } else { print "0" ; } ;
+    if or ( eq ( #a 1 ) or ( eq ( #b 1 ) not ( eq ( #a 1 ) ) ) ) then { print "1" ; } else { print "0" ; } ;
+    if not ( and ( not ( eq ( #a 1 ) ) not ( not ( eq ( #b 1 ) ) ) ) ) then { print "1" ; } else { print "0" ; } ;
+    if or ( larger ( #a #b ) lesser ( #a #b ) ) then { print "1" ; } else { print "0" ; } ;
+    if and ( not ( larger ( #a #b ) ) not ( lesser ( #a #b ) ) ) then { print "1" ; } else { print "0" ; } ;
+    print "," ;
+    #b = add ( #b 1 ) ;
+  } ;
+  #a = add ( #a 1 ) ;
+} ;

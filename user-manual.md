@@ -1,4 +1,4 @@
-# COS341 2026 - Semester Practical, Phases 1, 2a and 2b: User Manual - Group 28
+# COS341 2026 - Semester Practical, Phases 1, 2a, 2b and 3a: User Manual - Group 28
 
 **Group Members:**
 
@@ -11,7 +11,8 @@
 
 ## 1. What This Program Does
 
-This program is the front-end and semantic analyser of a compiler for the
+This program is the front-end, semantic analyser and (first part of the) code
+generator of a compiler for the
 Students' Programming Language (SPL), as defined in the COS341 2026
 specifications. Given a plain ASCII text file containing an SPL program, it
 runs the following phases in order and stops at the first phase that finds
@@ -31,6 +32,11 @@ an error:
    and a num function only inside a term. It also applies the float/integer
    rule: a program may not use both `mod` and `div`, and a program that uses
    `mod` may not contain decimal numbers.
+4. **Code generation (Phase 3a):** translates the main algorithm of the program
+   into C-style target code and writes it to `code.txt`. Conditions, branches
+   and loops become `if ( ... ) goto` jumps and labels, without `else` and
+   without Boolean operators. Functions and function calls are translated in
+   Phase 3b; until then a call is marked by a comment in the target code.
 
 ## 2. How to Run the Program
 
@@ -44,7 +50,7 @@ To run it, open a command prompt / terminal in the folder containing the
 executable, and run:
 
 ```
-java -jar group-28.jar SPL.txt tree.xml
+java -jar group-28.jar SPL.txt tree.xml code.txt
 ```
 
 Where:
@@ -52,6 +58,9 @@ Where:
 - `SPL.txt` is the path to the plain-text SPL source file to be analysed.
 - `tree.xml` is the path where the syntax tree is written if parsing
   succeeds (optional, the default is `tree.xml`).
+- `code.txt` is the path where the generated target code is written if the
+  program is correct (optional, the default is `code.txt`). To give it, the
+  tree file must be given as well.
 
 Optional flags, added after the file names, print the results of the
 semantic phases for inspection:
@@ -63,7 +72,7 @@ semantic phases for inspection:
 Example:
 
 ```
-java -jar group-28.jar examples/SPL.txt tree.xml --dump-symbols --dump-types
+java -jar group-28.jar examples/SPL.txt tree.xml code.txt --dump-symbols --dump-types
 ```
 
 ## 3. Expected Behaviour
@@ -80,13 +89,18 @@ java -jar group-28.jar examples/SPL.txt tree.xml --dump-symbols --dump-types
     reference to its parent's ID; and (for root/inner nodes) a list of its
     children's IDs.
 - No error messages are printed by the name/scope and type analysis.
+- The target code is written to the given path (e.g. `code.txt`): one
+  instruction per line, each ending with a semicolon. Every user variable
+  appears under its unique internal name (`sys1`, ...), every helper
+  variable (`v5`, ...) is declared as `int` or `float` (as found by the type
+  analysis), and labels (`L8 :`) mark the targets of `goto` jumps.
 - The program exits with status code 0.
 
 **On FAILURE:**
 
 - A lexical or syntax error stops the program before `tree.xml` is written.
 - A name/scope or type error is reported after `tree.xml` has been written
-  (the syntax itself was correct).
+  (the syntax itself was correct), and no target code is written.
 - Every error is printed to the console (stderr) with the line and column
   where it was detected, and an explanation or hint, in one of these forms:
   - `Lexical error at line L, column C: ...`
@@ -121,12 +135,16 @@ Type error at line 3, column 6: function '#hello' is a void function (type proce
 
 The folders `tests/phase2a` and `tests/phase2b` contain small SPL programs:
 files starting with `v` must be accepted, files starting with `e` must be
-rejected with the stated number of errors. After compiling the sources to
+rejected with the stated number of errors. The folder `tests/phase3a`
+contains programs together with their expected target code (`.code`); the
+test script also compiles the target code as C++ and, for files starting
+with `r`, runs it and compares the output with the `.expected` file. After compiling the sources to
 `target/classes`, run them from the repository root with:
 
 ```
 sh tests/phase2a/run_tests.sh
 sh tests/phase2b/run_tests.sh
+sh tests/phase3a/run_tests.sh
 ```
 
 ## 6. System Requirements
@@ -134,3 +152,5 @@ sh tests/phase2b/run_tests.sh
 - Java 17 or newer.
 - No other installation required; the executable is self-contained and can
   be run directly.
+- Only for the Phase 3a tests: a C++ compiler available as `c++` (e.g. g++
+  or clang++).

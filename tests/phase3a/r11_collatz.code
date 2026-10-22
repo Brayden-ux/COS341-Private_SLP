@@ -1,0 +1,106 @@
+int v5 ;
+v5 = 27 ;
+sys1 = v5 ;
+int v6 ;
+v6 = 0 ;
+sys3 = v6 ;
+int v7 ;
+v7 = sys1 ;
+sys4 = v7 ;
+L8 : /* until */
+int v11 ;
+int v12 ;
+v11 = sys1 ;
+v12 = 1 ;
+if ( v11 == v12 ) goto L9 ;
+L10 : /* do */
+/* if */
+int v16 ;
+int v17 ;
+int v18 ;
+int v19 ;
+v18 = sys1 ;
+v19 = 2 ;
+v16 = v18 % v19 ;
+v17 = 0 ;
+if ( v16 == v17 ) goto L13 ;
+L14 : /* else */
+int v32 ;
+int v33 ;
+int v34 ;
+int v35 ;
+int v36 ;
+v35 = 3 ;
+v36 = sys1 ;
+v33 = v35 * v36 ;
+v34 = 1 ;
+v32 = v33 + v34 ;
+sys1 = v32 ;
+/* end */ ;
+goto L15 ;
+L13 : /* then */
+/* "halve.by.counting" */ ;
+int v20 ;
+v20 = 0 ;
+sys2 = v20 ;
+L21 : /* until */
+int v24 ;
+int v25 ;
+int v26 ;
+int v27 ;
+v26 = sys2 ;
+v27 = sys2 ;
+v24 = v26 + v27 ;
+v25 = sys1 ;
+if ( v24 == v25 ) goto L22 ;
+L23 : /* do */
+int v28 ;
+int v29 ;
+int v30 ;
+v29 = sys2 ;
+v30 = 1 ;
+v28 = v29 + v30 ;
+sys2 = v28 ;
+/* end */ ;
+goto L21 ;
+L22 :
+/* exit */ ;
+int v31 ;
+v31 = sys2 ;
+sys1 = v31 ;
+/* end */ ;
+L15 : /* continue */ ;
+int v37 ;
+int v38 ;
+int v39 ;
+v38 = sys3 ;
+v39 = 1 ;
+v37 = v38 + v39 ;
+sys3 = v37 ;
+/* if */
+int v43 ;
+int v44 ;
+v43 = sys1 ;
+v44 = sys4 ;
+if ( v43 > v44 ) goto L40 ;
+L41 : /* else */
+/* end */ ;
+goto L42 ;
+L40 : /* then */
+int v45 ;
+v45 = sys1 ;
+sys4 = v45 ;
+/* end */ ;
+L42 : /* continue */ ;
+/* end */ ;
+goto L8 ;
+L9 :
+/* exit */ ;
+int v46 ;
+v46 = sys3 ;
+std::cout << v46 ;
+std::cout << "," ;
+int v47 ;
+v47 = sys4 ;
+std::cout << v47 ;
+/* end */

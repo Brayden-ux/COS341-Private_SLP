@@ -1,0 +1,110 @@
+int v2 ;
+v2 = 0 ;
+sys1 = v2 ;
+L3 : /* do */
+int v7 ;
+v7 = sys1 ;
+std::cout << v7 ;
+int v8 ;
+int v9 ;
+int v10 ;
+v9 = sys1 ;
+v10 = 1 ;
+v8 = v9 + v10 ;
+sys1 = v8 ;
+/* end */ ;
+/* while */
+int v5 ;
+int v6 ;
+v5 = sys1 ;
+v6 = 4 ;
+if ( v5 < v6 ) goto L3 ;
+L4 : /* exit */ ;
+std::cout << "," ;
+L11 : /* do */
+std::cout << "once" ;
+/* end */ ;
+/* while */
+int v13 ;
+int v14 ;
+v13 = sys1 ;
+v14 = 0 ;
+if ( v13 == v14 ) goto L11 ;
+L12 : /* exit */ ;
+std::cout << "," ;
+int v15 ;
+v15 = 0 ;
+sys1 = v15 ;
+L16 : /* do */
+int v23 ;
+int v24 ;
+int v25 ;
+v24 = sys1 ;
+v25 = 1 ;
+v23 = v24 + v25 ;
+sys1 = v23 ;
+/* end */ ;
+/* while */
+int v19 ;
+int v20 ;
+int v21 ;
+int v22 ;
+v21 = sys1 ;
+v22 = 5 ;
+v19 = v21 % v22 ;
+v20 = 0 ;
+if ( v19 == v20 ) goto L17 ;
+goto L16 ;
+L17 : /* exit */ ;
+int v26 ;
+v26 = sys1 ;
+std::cout << v26 ;
+std::cout << "," ;
+int v27 ;
+v27 = 0 ;
+sys1 = v27 ;
+L28 : /* do */
+int v40 ;
+int v41 ;
+int v42 ;
+v41 = sys1 ;
+v42 = 2 ;
+v40 = v41 + v42 ;
+sys1 = v40 ;
+/* end */ ;
+/* while */
+int v32 ;
+int v33 ;
+v32 = sys1 ;
+v33 = 20 ;
+if ( v32 < v33 ) goto L30 ;
+goto L29 ;
+L30 : /* and */
+int v36 ;
+int v37 ;
+v36 = sys1 ;
+v37 = 8 ;
+if ( v36 == v37 ) goto L34 ;
+goto L28 ;
+L34 : /* or */
+int v38 ;
+int v39 ;
+v38 = sys1 ;
+v39 = 100 ;
+if ( v38 > v39 ) goto L28 ;
+L29 : /* exit */ ;
+int v43 ;
+v43 = sys1 ;
+std::cout << v43 ;
+std::cout << "," ;
+L44 : /* do */
+/* end */ ;
+/* while */
+int v46 ;
+int v47 ;
+v46 = sys1 ;
+v47 = 100 ;
+if ( v46 > v47 ) goto L44 ;
+L45 : /* exit */ ;
+std::cout << "end" ;
+/* end */

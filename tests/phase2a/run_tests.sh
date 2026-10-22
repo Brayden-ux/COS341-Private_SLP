@@ -5,7 +5,7 @@ cd "$(dirname "$0")" || exit 1
 CP=../../target/classes
 pass=0; fail=0
 check() { # file expected_exit expected_error_count
-  out=$(java -cp $CP spl.SPLCompiler "$1" /tmp/_tree.xml 2>/tmp/_err.txt); code=$?
+  out=$(java -cp $CP spl.SPLCompiler "$1" /tmp/_tree.xml /tmp/_code.txt 2>/tmp/_err.txt); code=$?
   n=$(grep -c '^Semantic error' /tmp/_err.txt)
   if [ "$code" = "$2" ] && [ "$n" = "$3" ]; then pass=$((pass+1)); echo "PASS $1"
   else fail=$((fail+1)); echo "FAIL $1 (exit $code, $n semantic errors, expected exit $2 and $3)"; cat /tmp/_err.txt; fi
