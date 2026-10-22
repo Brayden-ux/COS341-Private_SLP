@@ -118,7 +118,66 @@ Type error at line 3, column 6: A float-integer-conflict might perhaps be possib
 Type error at line 3, column 6: function '#hello' is a void function (type procedure), so it returns no value, but it is used as a term, ...
 ```
 
-## 4. Notes on the SPL Language
+## 4. Compiling and Running the Generated Code
+
+The target code uses `std::cout` for printing, so it is **C++** (with the
+restricted, low-level syntax required by the specification: assignments,
+`if ( x op y ) goto L`, `goto L`, labels, `std::cout`, declarations, and
+comments; no `else`, no `&&`, `||` or `!`, no loops). It is meant to be
+read: one instruction per line, every jump target marked with a label and a
+comment (`/* if */`, `/* else */`, `/* then */`, `/* while */`, `/* exit */`, ...).
+
+**We prefer g++ for the run-tests.** The generated code compiles without
+errors or warnings with g++, for every C++ standard from C++11 to C++23,
+even with `-pedantic-errors -Wall -Wextra`.
+
+- With **g++** (preferred):
+
+  ```
+  g++ program.cpp -o program
+  ./program
+  ```
+
+- With **gcc**, tell it that the file is C++ and link the C++ library,
+  otherwise it either treats the file as C (and cannot find `<iostream>`)
+  or fails at link time:
+
+  ```
+  gcc -x c++ program.cpp -lstdc++ -o program
+  ./program
+  ```
+
+Please keep the file extension `.cpp` (or use `-x c++`); a `.c` extension
+makes gcc compile it as C, which does not offer `std::cout`.
+
+In this phase (3a) the compiler translates the main algorithm only, so
+`code.txt` is the body of the program. The surrounding
+`#include <iostream>`, `int main() {`, the variable declarations and
+`return 0; }` are generated in Phase 3b. Until then, a complete program
+can be built by hand around the generated code:
+
+```
+#include <iostream>
+int main()
+{
+int sys1 ;            /* one line per user variable, int or float */
+... contents of code.txt ...
+return 0;
+}
+```
+
+Notes for the run-tests:
+
+- All numbers are `int` or, if the program uses `div` or a number with a
+  decimal dot, `float`; this applies to the whole program.
+- `print` writes exactly what is asked for, without spaces or new lines in
+  between (SPL has no new-line command), so the output of several prints
+  appears on one line.
+- The compiler output may contain labels that no `goto` jumps to (e.g.
+  `L9 : /* else */`); these come from the specification's templates and
+  can at most cause an "unused label" warning with `-Wall`.
+
+## 5. Notes on the SPL Language
 
 - Every token in an SPL program must be terminated by a blank space
   (space, or newline/return).
@@ -131,7 +190,7 @@ Type error at line 3, column 6: function '#hello' is a void function (type proce
   and can only be called as an instruction; functions declared with `num`
   return a number and can only be called inside a term.
 
-## 5. Tests
+## 6. Tests
 
 The folders `tests/phase2a` and `tests/phase2b` contain small SPL programs:
 files starting with `v` must be accepted, files starting with `e` must be
@@ -147,10 +206,11 @@ sh tests/phase2b/run_tests.sh
 sh tests/phase3a/run_tests.sh
 ```
 
-## 6. System Requirements
+## 7. System Requirements
 
 - Java 17 or newer.
 - No other installation required; the executable is self-contained and can
   be run directly.
-- Only for the Phase 3a tests: a C++ compiler available as `c++` (e.g. g++
-  or clang++).
+- To run the generated code and the Phase 3a tests: a C++ compiler,
+  preferably g++. The test script uses `c++` by default; choose another one
+  with e.g. `CXX=g++ sh tests/phase3a/run_tests.sh`.

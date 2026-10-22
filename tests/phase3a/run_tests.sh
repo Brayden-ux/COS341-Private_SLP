@@ -2,7 +2,8 @@
 # Usage: tests/phase3a/run_tests.sh   (run from the repository root after compiling to target/classes)
 # For every test program X.txt the compiler must accept it and write target code that
 #  - is exactly X.code (the reviewed translation; run with UPDATE=1 to rewrite the .code files), and
-#  - compiles as C++ once wrapped in a main() that declares the program's sysN variables.
+#  - compiles as C++ once wrapped in a main() that declares the program's sysN variables,
+#    with -pedantic-errors (set CXX to choose the compiler, e.g. CXX=g++ or CXX=g++-13).
 # r* programs are also run: their output must be exactly X.expected.
 # c* programs contain function calls (inlined only in Phase 3b), so they are only compiled.
 cd "$(dirname "$0")" || exit 1
@@ -33,8 +34,8 @@ $(diff "$name.code" "$TMP/$name.code")"
       echo '}'
     } > "$TMP/$name.cpp"
     case $name in
-      r*) flags="-Wall -Werror -Wno-unused-label" ;;
-      *) flags="-fsyntax-only -Wno-uninitialized -Wno-unused-label" ;;
+      r*) flags="-pedantic-errors -Wall -Wextra -Werror -Wno-unused-label" ;;
+      *) flags="-pedantic-errors -fsyntax-only -Wno-uninitialized -Wno-unused-label" ;;
     esac
     if ! $CXX -std=c++17 $flags -o "$TMP/$name" "$TMP/$name.cpp" 2>"$TMP/cxx.txt"; then
       why="C++ compilation failed:

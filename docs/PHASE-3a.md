@@ -138,6 +138,13 @@ generator never writes an initialiser (`typ vN ;` and `vN = ...` are separate li
 every jump is legal. Every generated name is unique, so declaring `vN` again on the next
 pass through a loop body is fine.
 
+Checked with GCC (`g++`) for every standard from `-std=c++11` to `-std=c++23` with
+`-pedantic-errors -Wall -Wextra -Werror` (only unused-label warnings switched off), and with
+Apple clang. `gcc` also works when it is told the file is C++ and links the C++ library:
+`gcc -x c++ code.txt -lstdc++`. As plain C (`gcc code.c`) it cannot work, because C has no
+`<iostream>` or `std::cout`. That is why the tutors (announcement #34) allow calling the
+output C++. The user manual recommends g++.
+
 ## Function calls (until Phase 3b)
 
 The spec leaves `INSTR → CALL` and `TERM → CALL` for 3b (inlining). The generator already
