@@ -1,0 +1,16 @@
+#i :
+:
+#i = 0 ;
+do { print ( #i ) ; #i = add ( #i 1 ) ; } until eq ( #i 3 ) ;
+print "," ;
+do { print "once" ; } until eq ( #i 3 ) ;
+print "," ;
+#i = 0 ;
+do { #i = add ( #i 1 ) ; } until not ( lesser ( #i 6 ) ) ;
+print ( #i ) ; print "," ;
+#i = 0 ;
+do { #i = add ( #i 3 ) ; } until or ( larger ( #i 10 ) and ( eq ( mod ( #i 2 ) 0 ) larger ( #i 5 ) ) ) ;
+print ( #i ) ; print "," ;
+#i = 0 ;
+do { #i = add ( #i 1 ) ; } until and ( not ( lesser ( #i 4 ) ) not ( larger ( #i 4 ) ) ) ;
+print ( #i ) ;

@@ -1,0 +1,45 @@
+int v9 ;
+v9 = 3 ;
+sys1 = v9 ;
+int v10 ;
+int v11 ;
+v11 = sys1 ;
+/* v10 = call sys3 ( v11 ) : inlined in Phase 3b */ ;
+sys2 = v10 ;
+int v12 ;
+v12 = sys1 ;
+int v13 ;
+int v14 ;
+int v15 ;
+v14 = sys2 ;
+v15 = 2 ;
+v13 = v14 * v15 ;
+/* call sys4 ( v12 v13 ) : inlined in Phase 3b */ ;
+int v16 ;
+int v17 ;
+int v18 ;
+/* v17 = call sys5 ( ) : inlined in Phase 3b */ ;
+int v19 ;
+int v20 ;
+v20 = sys1 ;
+v19 = - v20 ;
+/* v18 = call sys3 ( v19 ) : inlined in Phase 3b */ ;
+v16 = v17 + v18 ;
+sys2 = v16 ;
+/* if */
+int v24 ;
+int v25 ;
+int v26 ;
+v26 = sys1 ;
+/* v24 = call sys3 ( v26 ) : inlined in Phase 3b */ ;
+v25 = 4 ;
+if ( v24 == v25 ) goto L21 ;
+L22 : /* else */
+/* nop */ ;
+/* end */ ;
+goto L23 ;
+L21 : /* then */
+/* call sys4 ( ) : inlined in Phase 3b */ ;
+/* end */ ;
+L23 : /* continue */ ;
+/* end */

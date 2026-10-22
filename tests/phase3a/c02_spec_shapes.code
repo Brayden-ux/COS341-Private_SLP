@@ -1,0 +1,90 @@
+std::cout << "s" ;
+int v3 ;
+v3 = sys1 ;
+std::cout << v3 ;
+/* nop */ ;
+/* "c" */ ;
+int v4 ;
+int v5 ;
+int v6 ;
+v5 = sys2 ;
+v6 = 1 ;
+v4 = v5 + v6 ;
+sys1 = v4 ;
+int v7 ;
+int v8 ;
+v8 = sys1 ;
+v7 = - v8 ;
+sys2 = v7 ;
+/* if */
+int v13 ;
+int v14 ;
+v13 = sys1 ;
+v14 = sys2 ;
+if ( v13 == v14 ) goto L10 ;
+goto L9 ;
+L10 : /* else */
+/* end */ ;
+goto L11 ;
+L9 : /* then */
+/* nop */ ;
+/* end */ ;
+L11 : /* continue */ ;
+L15 : /* until */
+int v19 ;
+int v20 ;
+v19 = sys1 ;
+v20 = 1 ;
+if ( v19 > v20 ) goto L16 ;
+int v21 ;
+int v22 ;
+v21 = sys1 ;
+v22 = 0 ;
+if ( v21 < v22 ) goto L16 ;
+L17 : /* do */
+/* nop */ ;
+/* end */ ;
+goto L15 ;
+L16 :
+/* exit */ ;
+L23 : /* while */
+int v29 ;
+int v30 ;
+v29 = sys1 ;
+v30 = 1 ;
+if ( v29 == v30 ) goto L27 ;
+goto L26 ;
+L27 : /* and */
+int v31 ;
+int v32 ;
+v31 = sys2 ;
+v32 = 2 ;
+if ( v31 == v32 ) goto L25 ;
+L26 : /* not */
+goto L24 ;
+L25 : /* do */
+/* end */ ;
+goto L23 ;
+L24 :
+/* exit */ ;
+L33 : /* do */
+/* nop */ ;
+/* end */ ;
+/* while */
+int v35 ;
+int v36 ;
+v35 = sys1 ;
+v36 = 1 ;
+if ( v35 == v36 ) goto L33 ;
+L34 : /* exit */ ;
+L37 : /* do */
+/* end */ ;
+/* until */
+int v40 ;
+int v41 ;
+v40 = sys1 ;
+v41 = 1 ;
+if ( v40 == v41 ) goto L38 ;
+goto L37 ;
+L38 : /* exit */ ;
+/* end */

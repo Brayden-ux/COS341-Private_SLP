@@ -5,7 +5,7 @@ cd "$(dirname "$0")" || exit 1
 CP=../../target/classes
 pass=0; fail=0
 check() { # file expected_exit expected_error_count [expected program number type]
-  out=$(java -cp $CP spl.SPLCompiler "$1" /tmp/_tree.xml --dump-types 2>/tmp/_err.txt); code=$?
+  out=$(java -cp $CP spl.SPLCompiler "$1" /tmp/_tree.xml /tmp/_code.txt --dump-types 2>/tmp/_err.txt); code=$?
   n=$(grep -c '^Type error' /tmp/_err.txt)
   typ=$(printf '%s\n' "$out" | sed -n 's/.*typ for Phase 3a): //p')
   if [ "$code" = "$2" ] && [ "$n" = "$3" ] && { [ -z "$4" ] || [ "$typ" = "$4" ]; }; then pass=$((pass+1)); echo "PASS $1"

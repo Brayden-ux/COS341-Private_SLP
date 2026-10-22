@@ -1,0 +1,16 @@
+#i #n :
+:
+#i = 0 ;
+until eq ( #i 5 ) do { print ( #i ) ; #i = add ( #i 1 ) ; } ;
+print "," ;
+until larger ( #i 0 ) do { print "never" ; } ;
+#i = 0 ;
+#n = 0 ;
+until or ( eq ( #i 4 ) larger ( #n 100 ) ) do { #i = add ( #i 1 ) ; #n = mul ( add ( #n 1 ) 10 ) ; } ;
+print ( #i ) ; print "," ; print ( #n ) ; print "," ;
+#i = 0 ;
+until not ( lesser ( #i 3 ) ) do { #i = add ( #i 1 ) ; } ;
+print ( #i ) ; print "," ;
+#i = 10 ;
+until and ( lesser ( #i 5 ) eq ( mod ( #i 2 ) 0 ) ) do { #i = sub ( #i 1 ) ; } ;
+print ( #i ) ;

@@ -1,0 +1,15 @@
+#i :
+:
+#i = 0 ;
+do { print ( #i ) ; #i = add ( #i 1 ) ; } while lesser ( #i 4 ) ;
+print "," ;
+do { print "once" ; } while eq ( #i 0 ) ;
+print "," ;
+#i = 0 ;
+do { #i = add ( #i 1 ) ; } while not ( eq ( mod ( #i 5 ) 0 ) ) ;
+print ( #i ) ; print "," ;
+#i = 0 ;
+do { #i = add ( #i 2 ) ; } while and ( lesser ( #i 20 ) or ( not ( eq ( #i 8 ) ) larger ( #i 100 ) ) ) ;
+print ( #i ) ; print "," ;
+do { } while larger ( #i 100 ) ;
+print "end" ;

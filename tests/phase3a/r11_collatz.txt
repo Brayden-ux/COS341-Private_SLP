@@ -1,0 +1,18 @@
+#a #h #steps #max :
+:
+#a = 27 ;
+#steps = 0 ;
+#max = #a ;
+until eq ( #a 1 ) do {
+  if eq ( mod ( #a 2 ) 0 ) then {
+    comment "halve.by.counting" ;
+    #h = 0 ;
+    until eq ( add ( #h #h ) #a ) do { #h = add ( #h 1 ) ; } ;
+    #a = #h ;
+  } else {
+    #a = add ( mul ( 3 #a ) 1 ) ;
+  } ;
+  #steps = add ( #steps 1 ) ;
+  if larger ( #a #max ) then { #max = #a ; } else { } ;
+} ;
+print ( #steps ) ; print "," ; print ( #max ) ;

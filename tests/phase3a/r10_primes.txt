@@ -1,0 +1,13 @@
+#n #d #prime :
+:
+#n = 2 ;
+while lesser ( #n 40 ) do {
+  #d = 2 ;
+  #prime = 1 ;
+  while and ( eq ( #prime 1 ) not ( larger ( mul ( #d #d ) #n ) ) ) do {
+    if eq ( mod ( #n #d ) 0 ) then { #prime = 0 ; } else { nop ; } ;
+    #d = add ( #d 1 ) ;
+  } ;
+  if eq ( #prime 1 ) then { print ( #n ) ; print "," ; } else { } ;
+  #n = add ( #n 1 ) ;
+} ;

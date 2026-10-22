@@ -1,0 +1,147 @@
+int v3 ;
+v3 = 0 ;
+sys1 = v3 ;
+L4 : /* until */
+int v7 ;
+int v8 ;
+v7 = sys1 ;
+v8 = 5 ;
+if ( v7 == v8 ) goto L5 ;
+L6 : /* do */
+int v9 ;
+v9 = sys1 ;
+std::cout << v9 ;
+int v10 ;
+int v11 ;
+int v12 ;
+v11 = sys1 ;
+v12 = 1 ;
+v10 = v11 + v12 ;
+sys1 = v10 ;
+/* end */ ;
+goto L4 ;
+L5 :
+/* exit */ ;
+std::cout << "," ;
+L13 : /* until */
+int v16 ;
+int v17 ;
+v16 = sys1 ;
+v17 = 0 ;
+if ( v16 > v17 ) goto L14 ;
+L15 : /* do */
+std::cout << "never" ;
+/* end */ ;
+goto L13 ;
+L14 :
+/* exit */ ;
+int v18 ;
+v18 = 0 ;
+sys1 = v18 ;
+int v19 ;
+v19 = 0 ;
+sys2 = v19 ;
+L20 : /* until */
+int v24 ;
+int v25 ;
+v24 = sys1 ;
+v25 = 4 ;
+if ( v24 == v25 ) goto L21 ;
+int v26 ;
+int v27 ;
+v26 = sys2 ;
+v27 = 100 ;
+if ( v26 > v27 ) goto L21 ;
+L22 : /* do */
+int v28 ;
+int v29 ;
+int v30 ;
+v29 = sys1 ;
+v30 = 1 ;
+v28 = v29 + v30 ;
+sys1 = v28 ;
+int v31 ;
+int v32 ;
+int v33 ;
+int v34 ;
+int v35 ;
+v34 = sys2 ;
+v35 = 1 ;
+v32 = v34 + v35 ;
+v33 = 10 ;
+v31 = v32 * v33 ;
+sys2 = v31 ;
+/* end */ ;
+goto L20 ;
+L21 :
+/* exit */ ;
+int v36 ;
+v36 = sys1 ;
+std::cout << v36 ;
+std::cout << "," ;
+int v37 ;
+v37 = sys2 ;
+std::cout << v37 ;
+std::cout << "," ;
+int v38 ;
+v38 = 0 ;
+sys1 = v38 ;
+L39 : /* until */
+int v43 ;
+int v44 ;
+v43 = sys1 ;
+v44 = 3 ;
+if ( v43 < v44 ) goto L41 ;
+goto L40 ;
+L41 : /* do */
+int v45 ;
+int v46 ;
+int v47 ;
+v46 = sys1 ;
+v47 = 1 ;
+v45 = v46 + v47 ;
+sys1 = v45 ;
+/* end */ ;
+goto L39 ;
+L40 :
+/* exit */ ;
+int v48 ;
+v48 = sys1 ;
+std::cout << v48 ;
+std::cout << "," ;
+int v49 ;
+v49 = 10 ;
+sys1 = v49 ;
+L50 : /* until */
+int v55 ;
+int v56 ;
+v55 = sys1 ;
+v56 = 5 ;
+if ( v55 < v56 ) goto L53 ;
+goto L52 ;
+L53 : /* and */
+int v57 ;
+int v58 ;
+int v59 ;
+int v60 ;
+v59 = sys1 ;
+v60 = 2 ;
+v57 = v59 % v60 ;
+v58 = 0 ;
+if ( v57 == v58 ) goto L51 ;
+L52 : /* do */
+int v61 ;
+int v62 ;
+int v63 ;
+v62 = sys1 ;
+v63 = 1 ;
+v61 = v62 - v63 ;
+sys1 = v61 ;
+/* end */ ;
+goto L50 ;
+L51 :
+/* exit */ ;
+int v64 ;
+v64 = sys1 ;
+std::cout << v64 ;
+/* end */

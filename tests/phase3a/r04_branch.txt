@@ -1,0 +1,13 @@
+#x :
+:
+#x = 5 ;
+if eq ( #x 5 ) then { print "eq" ; } else { print "neq" ; } ;
+if eq ( #x 6 ) then { print "eq" ; } else { print "neq" ; } ;
+if larger ( #x 4 ) then { print "gt" ; } else { print "notgt" ; } ;
+if larger ( #x 5 ) then { print "gt" ; } else { print "notgt" ; } ;
+if lesser ( #x 6 ) then { print "lt" ; } else { print "notlt" ; } ;
+if lesser ( #x 5 ) then { print "lt" ; } else { print "notlt" ; } ;
+if eq ( #x 5 ) then { } else { print "never" ; } ;
+if eq ( #x 4 ) then { print "never" ; } else { } ;
+if eq ( #x 5 ) then { #x = 1 ; if eq ( #x 1 ) then { print "inner" ; } else { print "no" ; } ; } else { print "no" ; } ;
+print "." ;
