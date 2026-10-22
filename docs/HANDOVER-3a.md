@@ -54,6 +54,6 @@ equal to the lexeme and `getToken().getType()` gives the `TokenType`.
 
 ## How 2b was specified
 
-2b follows `Prac-Spec-2b.pdf` rule by rule (one `check...` method per non-terminal in
+2b follows `spec/Prac-Spec-2b.pdf` rule by rule (one `check...` method per non-terminal in
 `TypeAnalyzer`), including the crude float/integer rule and its exact error message
 "A float-integer-conflict might perhaps be possible".

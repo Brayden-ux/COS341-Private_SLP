@@ -3,7 +3,7 @@
 COS341 2026 Semester Practical: a lexer + SLR(1) parser for the Students'
 Programming Language (SPL), implemented in Java per the architecture in
 [`spl-slr-parser-class-diagram.mermaid`](spl-slr-parser-class-diagram.mermaid)
-and the grammar in [`Prac-Spec-Syntax.pdf`](Prac-Spec-Syntax.pdf).
+and the grammar in [`spec/Prac-Spec-Syntax.pdf`](spec/Prac-Spec-Syntax.pdf).
 
 ## Build
 
@@ -65,7 +65,7 @@ java -cp target/classes spl.SPLCompiler examples/SPL.txt tree.xml
   `Scope`, `SymbolTable`, `Symbol`. Checks the scoping rules and renames every
   entity uniquely (`sys1`, `sys2`, ...).
 - **Type analysis, Phase 2b** (`spl.semantic`): `TypeAnalyzer`, `Type`. Implements
-  the rules of `Prac-Spec-2b.pdf`: every node starts as `unknown` and becomes `ok`,
+  the rules of `spec/Prac-Spec-2b.pdf`: every node starts as `unknown` and becomes `ok`,
   `numeric`, `boolean` or `procedure`; void functions may only be called as
   instructions and num functions only inside terms; a program with both `mod` and
   `div` is rejected ("A float-integer-conflict might perhaps be possible"), and a
