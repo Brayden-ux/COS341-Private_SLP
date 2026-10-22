@@ -1,0 +1,5 @@
+#x :
+void #v ( ) { : : nop ; return }
+num #f ( #a ) { : : return ( #a ) } :
+print ( add ( #v ( ) 1 ) ) ;
+#f ( 1 ) ;

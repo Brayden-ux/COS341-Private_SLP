@@ -1,0 +1,7 @@
+#x #y :
+num #add1 ( #a ) { : : return ( add ( #a 1 ) ) }
+void #show ( #v ) { : : print ( #v ) ; return } :
+#x = 3 ;
+#y = #add1 ( #x ) ;
+#show ( #y ) ;
+if eq ( #x 3 ) then { print ( #y ) ; } else { nop ; } ;

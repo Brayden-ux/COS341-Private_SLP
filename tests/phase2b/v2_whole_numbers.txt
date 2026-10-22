@@ -1,0 +1,6 @@
+#n #r :
+num #half ( #a ) { : : return ( div ( #a 2 ) ) } :
+#n = 7 ;
+#r = #half ( #n ) ;
+while larger ( #n 0 ) do { #n = sub ( #n 1 ) ; } ;
+print ( #r ) ;

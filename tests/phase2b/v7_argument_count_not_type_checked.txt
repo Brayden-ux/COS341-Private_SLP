@@ -1,0 +1,3 @@
+#x :
+num #add2 ( #a #b ) { : : return ( add ( #a #b ) ) } :
+#x = #add2 ( 1 ) ;

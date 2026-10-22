@@ -1,0 +1,3 @@
+#x :
+void #hello ( ) { : : print "hi" ; return } :
+#x = #hello ( ) ;
