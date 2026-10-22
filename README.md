@@ -36,6 +36,10 @@ java -cp target/classes spl.SPLCompiler examples/SPL.txt tree.xml
   children, and parent links).
 - Otherwise, a meaningful syntax or lexical error message (with a hint) is
   printed to stderr and the process exits non-zero.
+- After a successful parse, the program is checked for name/scope errors
+  (Phase 2a) and type errors (Phase 2b). Each violation is printed as
+  `Semantic error at line L, column C: ...` or `Type error at line L, column C: ...`
+  and the process exits non-zero. A correct program produces no messages.
 
 ## Architecture
 
@@ -57,4 +61,26 @@ java -cp target/classes spl.SPLCompiler examples/SPL.txt tree.xml
   `InnerNode`, `LeafNode`, `NodeIdGenerator`, `TreeVisitor`,
   `XmlTreeWriter` — writes `tree.xml` with unique node IDs, contents,
   children lists, and parent links as required by the spec.
+- **Name and scope analysis, Phase 2a** (`spl.semantic`): `NameAnalyzer`,
+  `Scope`, `SymbolTable`, `Symbol`. Checks the scoping rules and renames every
+  entity uniquely (`sys1`, `sys2`, ...).
+- **Type analysis, Phase 2b** (`spl.semantic`): `TypeAnalyzer`, `Type`. Implements
+  the rules of `Prac-Spec-2b.pdf`: every node starts as `unknown` and becomes `ok`,
+  `numeric`, `boolean` or `procedure`; void functions may only be called as
+  instructions and num functions only inside terms; a program with both `mod` and
+  `div` is rejected ("A float-integer-conflict might perhaps be possible"), and a
+  program with `mod` may not contain decimal numbers. It also decides whether the
+  program uses integers (`int`) or floats (`float`) for the code generator.
 - **Entry point**: `spl.SPLCompiler`.
+
+## Tests
+
+```bash
+javac -d target/classes $(find src/main/java -name "*.java")
+sh tests/phase2a/run_tests.sh
+sh tests/phase2b/run_tests.sh
+```
+
+Add `--dump-symbols` and/or `--dump-types` to a run to print the symbol table and
+the type attributes. See [`docs/HANDOVER-3a.md`](docs/HANDOVER-3a.md) for how the
+code generator (Phase 3a) uses them.
