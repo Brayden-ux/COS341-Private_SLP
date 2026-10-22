@@ -6,9 +6,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import spl.lexer.TokenType;
-import spl.tree.InnerNode;
 import spl.tree.LeafNode;
-import spl.tree.RootNode;
 import spl.tree.SyntaxTree;
 import spl.tree.SyntaxTreeNode;
 
@@ -239,20 +237,11 @@ public final class NameAnalyzer{
     }
 
     private List<SyntaxTreeNode> children(SyntaxTreeNode n){
-        List<Integer> ids;
-        if (n instanceof RootNode r) ids = r.getChildIds();
-        else if (n instanceof InnerNode in) ids = in.getChildIds();
-        else return List.of();
-        List<SyntaxTreeNode> out = new ArrayList<>(ids.size());
-        for (int id : ids) out.add(tree.getNode(id));
-        return out;
+        return tree.children(n);
     }
 
     private SyntaxTreeNode child(SyntaxTreeNode n, String nonTerminal){
-        for (SyntaxTreeNode c : children(n)){
-            if (!(c instanceof LeafNode) && c.contents().equals(nonTerminal)) return c;
-        }
-        return null;
+        return tree.child(n, nonTerminal);
     }
 
     private boolean isName(SyntaxTreeNode n){

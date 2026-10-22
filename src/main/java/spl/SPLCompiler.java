@@ -17,24 +17,27 @@ import spl.tree.XmlTreeWriter;
 import spl.semantic.NameAnalyzer;
 import spl.semantic.SemanticError;
 import spl.semantic.SymbolTable;
+import spl.semantic.TypeAnalyzer;
 
 /** Entry point: reads an SPL source file, parses it, and writes tree.xml. */
 public final class SPLCompiler {
 
     public static void main(String[] args) {
         boolean dumpSymbols = false;
+        boolean dumpTypes = false;
         java.util.List<String> positional = new java.util.ArrayList<>();
         for (String a : args) {
             if (a.equals("--dump-symbols")) dumpSymbols = true;
+            else if (a.equals("--dump-types")) dumpTypes = true;
             else positional.add(a);
         }
         if (positional.size() < 1) {
-            System.err.println("Usage: java -jar spl-slr-parser.jar <SPL.txt> [tree.xml] [--dump-symbols]");
+            System.err.println("Usage: java -jar spl-slr-parser.jar <SPL.txt> [tree.xml] [--dump-symbols] [--dump-types]");
             System.exit(2);
         }
         String source = readSource(positional.get(0));
         String outputPath = positional.size() >= 2 ? positional.get(1) : "tree.xml";
-        int code = run(source, outputPath, dumpSymbols);
+        int code = run(source, outputPath, dumpSymbols, dumpTypes);
         System.exit(code);
     }
 
@@ -48,7 +51,7 @@ public final class SPLCompiler {
         }
     }
 
-    private static int run(String source, String outputPath, boolean dumpSymbols) {
+    private static int run(String source, String outputPath, boolean dumpSymbols, boolean dumpTypes) {
         ErrorReporter reporter = new ErrorReporter();
 
         SPLGrammar grammar = new SPLGrammar().build().augment();
@@ -88,9 +91,25 @@ public final class SPLCompiler {
                 }
                 return 1;
             }
+
+            // Phase 2b: types. Also silent when everything is correct.
+            TypeAnalyzer types = new TypeAnalyzer(tree, symbols);
+            types.analyze();
+            if (types.hasErrors()) {
+                for (SemanticError e : types.getErrors()) {
+                    System.err.println(e.format());
+                }
+                return 1;
+            }
             if (dumpSymbols) {
                 System.out.print(symbols.dump());
             }
+            if (dumpTypes) {
+                System.out.print(types.dump());
+            }
+
+            // Phase 3a: the code generator plugs in here. It gets the syntax tree, the
+            // symbol table (internal names, fresh names) and the type analyser (typ).
             return 0;
         } catch (ParseException e) {
             reporter.printAll();

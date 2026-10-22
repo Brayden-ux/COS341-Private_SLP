@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.regex.Pattern;
 import spl.parser.ErrorReporter;
+import spl.parser.ParseException;
 
 /**
  * Every SPL token must be terminated by a blank_space (ASCII 32 or ASCII 13),
@@ -119,7 +120,8 @@ public final class Lexer {
                     "check spelling of keywords, or that names start with '#' and numbers/strings follow the SPL lexical rules",
                     line, column);
             reporter.lexicalError(err);
-            type = TokenType.EOF;
+            // stop here: feeding the parser a placeholder token only produced a misleading syntax error
+            throw new ParseException(err.format());
         }
         return new Token(type, lexeme, line, column);
     }

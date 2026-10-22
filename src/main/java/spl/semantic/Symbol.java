@@ -20,7 +20,7 @@ public final class Symbol{
     private final String returnKind; // "num" or "void" for functions, null for variables
     private final List<Symbol> parameters = new ArrayList<>(); // functions only, in declaration order
     private int ftypeNodeId = -1; // functions only: the F_TYPE node that declares this function
-    private String type = "unknown"; 
+    private String type = "unknown"; // Phase 2b: "numeric" or "procedure"
 
     Symbol(String internalName, String originalName, Kind kind, int scopeLevel,
            int declNodeId, boolean parameter, String returnKind){

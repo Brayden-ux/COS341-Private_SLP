@@ -1,0 +1,3 @@
+#x :
+num #bad ( ) { : void #p ( ) { : : nop ; return } : nop ; return ( #p ( ) ) } :
+#x = #bad ( ) ;

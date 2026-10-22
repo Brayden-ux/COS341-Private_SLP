@@ -1,0 +1,3 @@
+#x :
+void #v ( ) { : : nop ; return } :
+if lesser ( #v ( ) 3 ) then { nop ; } else { nop ; } ;

@@ -1,0 +1,4 @@
+#x :
+void #hello ( ) { : : print "hi" ; return } :
+do { #hello ( ) ; #x = add ( #x 1 ) ; } until or ( eq ( #x 3 ) not ( lesser ( #x 10 ) ) ) ;
+comment "done" ;

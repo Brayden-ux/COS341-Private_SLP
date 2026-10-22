@@ -1,0 +1,1 @@
+: num #outer ( #a ) { : void #inner ( ) { : : nop ; return } : #inner ( ) ; return ( #inner ( ) ) } : nop ;
