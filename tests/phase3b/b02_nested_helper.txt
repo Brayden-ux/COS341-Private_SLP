@@ -1,7 +1,0 @@
-#x :
-num #outer ( #a ) { :
-void #increment ( #b ) { : : #a = add ( #a #b ) ; return }
-: #increment ( 4 ) ; return ( #a ) }
-:
-#x = #outer ( 3 ) ;
-print ( #x ) ;

@@ -32,10 +32,11 @@ an error:
    and a num function only inside a term. It also applies the float/integer
    rule: a program may not use both `mod` and `div`, and a program that uses
    `mod` may not contain decimal numbers.
-4. **Code generation (Phases 3a and 3b):** translates the program into C++ and
-   writes it to `code.txt`. Conditions, branches and loops become `if ( ... ) goto`
-   jumps and labels, without `else` and without Boolean operators. Function calls
-   are expanded inline from non-executable code-mine snippets.
+4. **Code generation (Phase 3a):** translates the main algorithm of the program
+   into C-style target code and writes it to `code.txt`. Conditions, branches
+   and loops become `if ( ... ) goto` jumps and labels, without `else` and
+   without Boolean operators. Functions and function calls are translated in
+   Phase 3b; until then a call is marked by a comment in the target code.
 
 ## 2. How to Run the Program
 
@@ -149,9 +150,11 @@ even with `-pedantic-errors -Wall -Wextra`.
 Please keep the file extension `.cpp` (or use `-x c++`); a `.c` extension
 makes gcc compile it as C, which does not offer `std::cout`.
 
-The compiler emits a complete C++ program, including the wrapper, declarations,
-and `return 0;`. Function bodies appear in non-executable comments and are copied
-into the executable code at their call sites.
+In this phase (3a) the compiler translates the main algorithm only, so
+`code.txt` is the body of the program. The surrounding
+`#include <iostream>`, `int main() {`, the variable declarations and
+`return 0; }` are generated in Phase 3b. Until then, a complete program
+can be built by hand around the generated code:
 
 ```
 #include <iostream>

@@ -6,4 +6,4 @@ num #zero ( ) { : : return ( 0 ) } :
 #y = #add1 ( #x ) ;
 #show ( #x mul ( #y 2 ) ) ;
 #y = add ( #zero ( ) #add1 ( neg ( #x ) ) ) ;
-if eq ( #add1 ( #x ) 4 ) then { #show ( #x #y ) ; } else { nop ; } ;
+if eq ( #add1 ( #x ) 4 ) then { #show ( ) ; } else { nop ; } ;

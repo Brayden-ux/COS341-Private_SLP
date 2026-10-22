@@ -1,60 +1,27 @@
-/* code-mine sys3 */
-// int sys5 ;
-// int sys6 ;
-//  ;
-// int v8 ;
-// int v9 ;
-// int v10 ;
-// v9 = sys5 ;
-// v10 = 1 ;
-// v8 = v9 + v10 ;
-// sys6 = v8 ;
-// /* end */ ;
-// int sys3r ;
-// sys3r = sys6
-/* end code-mine sys3 */
-/* code-mine sys4 */
-// int sys7 ;
-//  ;
-// int v11 ;
-// v11 = 99 ;
-// sys7 = v11 ;
-// int v12 ;
-// v12 = sys7 ;
-// std::cout << v12 ;
-// /* end */
-/* end code-mine sys4 */
-#include <iostream>
-int main()
-{
-int sys1 ;
-int sys2 ;
-int v13 ;
-v13 = 1 ;
-sys1 = v13 ;
-int v14 ;
-v14 = 2 ;
-sys2 = v14 ;
+int v8 ;
+v8 = 1 ;
+sys1 = v8 ;
+int v9 ;
+v9 = 2 ;
+sys2 = v9 ;
 /* if */
-int v18 ;
-int v19 ;
-v18 = sys2 ;
-v19 = sys1 ;
-if ( v18 > v19 ) goto L15 ;
-L16 : /* else */
+int v13 ;
+int v14 ;
+v13 = sys2 ;
+v14 = sys1 ;
+if ( v13 > v14 ) goto L10 ;
+L11 : /* else */
 std::cout << "no" ;
 /* end */ ;
-goto L17 ;
-L15 : /* then */
-int v20 ;
-int v21 ;
-int v22 ;
-v21 = sys2 ;
-v22 = sys1 ;
-v20 = v21 - v22 ;
-std::cout << v20 ;
+goto L12 ;
+L10 : /* then */
+int v15 ;
+int v16 ;
+int v17 ;
+v16 = sys2 ;
+v17 = sys1 ;
+v15 = v16 - v17 ;
+std::cout << v15 ;
 /* end */ ;
-L17 : /* continue */ ;
-/* end */ ;
-return 0;
-}
+L12 : /* continue */ ;
+/* end */

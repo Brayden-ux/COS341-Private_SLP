@@ -1,7 +1,3 @@
-#include <iostream>
-int main()
-{
-int sys1 ;
 int v2 ;
 v2 = 5 ;
 sys1 = v2 ;
@@ -146,6 +142,4 @@ L51 : /* continue */ ;
 /* end */ ;
 L45 : /* continue */ ;
 std::cout << "." ;
-/* end */ ;
-return 0;
-}
+/* end */

@@ -1,10 +1,3 @@
-#include <iostream>
-int main()
-{
-int sys1 ;
-int sys2 ;
-int sys3 ;
-int sys4 ;
 int v5 ;
 v5 = 27 ;
 sys1 = v5 ;
@@ -110,6 +103,4 @@ std::cout << "," ;
 int v47 ;
 v47 = sys4 ;
 std::cout << v47 ;
-/* end */ ;
-return 0;
-}
+/* end */

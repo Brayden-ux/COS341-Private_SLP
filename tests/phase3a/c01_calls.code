@@ -1,142 +1,45 @@
-/* code-mine sys3 */
-// int sys6 ;
-//  ;
-// /* end */ ;
-// int sys3r ;
-// int v9 ;
-// int v10 ;
-// v9 = sys6 ;
-// v10 = 1 ;
-// sys3r = v9 + v10
-/* end code-mine sys3 */
-/* code-mine sys4 */
-// int sys7 ;
-// int sys8 ;
-//  ;
-// int v11 ;
-// v11 = sys7 ;
-// std::cout << v11 ;
-// /* end */
-/* end code-mine sys4 */
-/* code-mine sys5 */
-// /* end */ ;
-// int sys5r ;
-// sys5r = 0
-/* end code-mine sys5 */
-#include <iostream>
-int main()
-{
-int sys1 ;
-int sys2 ;
+int v9 ;
+v9 = 3 ;
+sys1 = v9 ;
+int v10 ;
+int v11 ;
+v11 = sys1 ;
+/* v10 = call sys3 ( v11 ) : inlined in Phase 3b */ ;
+sys2 = v10 ;
 int v12 ;
-v12 = 3 ;
-sys1 = v12 ;
+v12 = sys1 ;
 int v13 ;
 int v14 ;
-v14 = sys1 ;
-{ ;
-int sys6 ;
- ;
-sys6 = v14 ;
-/* end */ ;
-int sys3r ;
-int v9 ;
-int v10 ;
-v9 = sys6 ;
-v10 = 1 ;
-sys3r = v9 + v10 ;
-v13 = sys3r ;
-} ;
-sys2 = v13 ;
 int v15 ;
-v15 = sys1 ;
+v14 = sys2 ;
+v15 = 2 ;
+v13 = v14 * v15 ;
+/* call sys4 ( v12 v13 ) : inlined in Phase 3b */ ;
 int v16 ;
 int v17 ;
 int v18 ;
-v17 = sys2 ;
-v18 = 2 ;
-v16 = v17 * v18 ;
-{ ;
-int sys7 ;
-int sys8 ;
- ;
-sys7 = v15 ;
-sys8 = v16 ;
-int v11 ;
-v11 = sys7 ;
-std::cout << v11 ;
-/* end */ ;
-} ;
+/* v17 = call sys5 ( ) : inlined in Phase 3b */ ;
 int v19 ;
 int v20 ;
-int v21 ;
-{ ;
-/* end */ ;
-int sys5r ;
-sys5r = 0 ;
-v20 = sys5r ;
-} ;
-int v22 ;
-int v23 ;
-v23 = sys1 ;
-v22 = - v23 ;
-{ ;
-int sys6 ;
- ;
-sys6 = v22 ;
-/* end */ ;
-int sys3r ;
-int v9 ;
-int v10 ;
-v9 = sys6 ;
-v10 = 1 ;
-sys3r = v9 + v10 ;
-v21 = sys3r ;
-} ;
-v19 = v20 + v21 ;
-sys2 = v19 ;
+v20 = sys1 ;
+v19 = - v20 ;
+/* v18 = call sys3 ( v19 ) : inlined in Phase 3b */ ;
+v16 = v17 + v18 ;
+sys2 = v16 ;
 /* if */
-int v27 ;
-int v28 ;
-int v29 ;
-v29 = sys1 ;
-{ ;
-int sys6 ;
- ;
-sys6 = v29 ;
-/* end */ ;
-int sys3r ;
-int v9 ;
-int v10 ;
-v9 = sys6 ;
-v10 = 1 ;
-sys3r = v9 + v10 ;
-v27 = sys3r ;
-} ;
-v28 = 4 ;
-if ( v27 == v28 ) goto L24 ;
-L25 : /* else */
+int v24 ;
+int v25 ;
+int v26 ;
+v26 = sys1 ;
+/* v24 = call sys3 ( v26 ) : inlined in Phase 3b */ ;
+v25 = 4 ;
+if ( v24 == v25 ) goto L21 ;
+L22 : /* else */
 /* nop */ ;
 /* end */ ;
-goto L26 ;
-L24 : /* then */
-int v30 ;
-v30 = sys1 ;
-int v31 ;
-v31 = sys2 ;
-{ ;
-int sys7 ;
-int sys8 ;
- ;
-sys7 = v30 ;
-sys8 = v31 ;
-int v11 ;
-v11 = sys7 ;
-std::cout << v11 ;
+goto L23 ;
+L21 : /* then */
+/* call sys4 ( ) : inlined in Phase 3b */ ;
 /* end */ ;
-} ;
-/* end */ ;
-L26 : /* continue */ ;
-/* end */ ;
-return 0;
-}
+L23 : /* continue */ ;
+/* end */

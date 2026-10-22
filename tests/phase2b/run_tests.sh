@@ -8,15 +8,7 @@ check() { # file expected_exit expected_error_count [expected program number typ
   out=$(java -cp $CP spl.SPLCompiler "$1" /tmp/_tree.xml /tmp/_code.txt --dump-types 2>/tmp/_err.txt); code=$?
   n=$(grep -c '^Type error' /tmp/_err.txt)
   typ=$(printf '%s\n' "$out" | sed -n 's/.*typ for Phase 3a): //p')
-  # Phase 2b intentionally does not check call arity. Phase 3b now rejects the
-  # mismatch during code generation, after type analysis has accepted it.
-  arity_ok=1
-  if [ "$1" = "v7_argument_count_not_type_checked.txt" ]; then
-    [ "$code" = 1 ] && grep -q '^Code generation error: call to #add2 has 1 argument(s), but its declaration has 2$' /tmp/_err.txt || arity_ok=0
-  else
-    [ "$code" = "$2" ] || arity_ok=0
-  fi
-  if [ "$arity_ok" = 1 ] && [ "$n" = "$3" ] && { [ -z "$4" ] || [ "$typ" = "$4" ]; }; then pass=$((pass+1)); echo "PASS $1"
+  if [ "$code" = "$2" ] && [ "$n" = "$3" ] && { [ -z "$4" ] || [ "$typ" = "$4" ]; }; then pass=$((pass+1)); echo "PASS $1"
   else fail=$((fail+1)); echo "FAIL $1 (exit $code, $n type errors, typ '$typ'; expected exit $2, $3 errors ${4:+and typ $4})"; grep -v JAVA_TOOL /tmp/_err.txt; fi
 }
 check v1_calls_ok.txt 0 0 int

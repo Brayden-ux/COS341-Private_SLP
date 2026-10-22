@@ -110,14 +110,8 @@ public final class SPLCompiler {
                 System.out.print(types.dump());
             }
 
-            // Phase 3b: generate the function code-mine and executable inlined C++ program.
-            String target;
-            try {
-                target = new CodeGenerator(tree, symbols, types).generate();
-            } catch (IllegalStateException e) {
-                System.err.println("Code generation error: " + e.getMessage());
-                return 1;
-            }
+            // Phase 3a: code generation for the main ALGO (functions and calls follow in 3b).
+            String target = new CodeGenerator(tree, symbols, types).generate();
             Files.writeString(Path.of(codePath), target);
             System.out.println("Code generated. Target code written to " + codePath);
             return 0;

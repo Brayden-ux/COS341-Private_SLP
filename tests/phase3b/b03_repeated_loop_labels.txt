@@ -1,7 +1,0 @@
-#a #b :
-num #count ( #n ) { #i : : #i = 0 ; while lesser ( #i #n ) do { #i = add ( #i 1 ) ; } ; return ( #i ) }
-:
-#a = #count ( 3 ) ;
-#b = #count ( 2 ) ;
-print ( #a ) ;
-print ( #b ) ;
