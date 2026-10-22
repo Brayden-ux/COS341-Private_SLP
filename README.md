@@ -40,8 +40,8 @@ java -cp target/classes spl.SPLCompiler examples/SPL.txt tree.xml
   (Phase 2a) and type errors (Phase 2b). Each violation is printed as
   `Semantic error at line L, column C: ...` or `Type error at line L, column C: ...`
   and the process exits non-zero. A correct program produces no messages.
-- A correct program is then translated (Phase 3a) and the target code for its main
-  algorithm is written to `code.txt` (third argument, optional).
+- A correct program is translated (Phases 3a and 3b) into a complete C++ program,
+  with function calls inlined, and written to `code.txt` (third argument, optional).
 
 ## Architecture
 
@@ -73,10 +73,11 @@ java -cp target/classes spl.SPLCompiler examples/SPL.txt tree.xml
   `div` is rejected ("A float-integer-conflict might perhaps be possible"), and a
   program with `mod` may not contain decimal numbers. It also decides whether the
   program uses integers (`int`) or floats (`float`) for the code generator.
-- **Code generation, Phase 3a** (`spl.codegen`): `CodeGenerator`. Translates the main
-  `ALGO` into C-style target code with `goto` jumps and no `else` or Boolean operators,
-  following `spec/Prac-Spec-3a.pdf` and the translation functions of Chapter 6 of the
-  textbook. See [`docs/PHASE-3a.md`](docs/PHASE-3a.md).
+- **Code generation, Phases 3a and 3b** (`spl.codegen`): `CodeGenerator`. Translates
+  the main `ALGO`, emits non-executable function code-mine snippets and inlines calls
+  into a complete C++ program. Conditions, branches and loops use `goto` jumps and
+  labels, without `else` or Boolean operators. See [`docs/PHASE-3a.md`](docs/PHASE-3a.md)
+  and [`docs/PHASE-3b.md`](docs/PHASE-3b.md).
 - **Entry point**: `spl.SPLCompiler`.
 
 ## Tests
@@ -86,6 +87,7 @@ javac -d target/classes $(find src/main/java -name "*.java")
 sh tests/phase2a/run_tests.sh
 sh tests/phase2b/run_tests.sh
 sh tests/phase3a/run_tests.sh   # also needs a C++ compiler (c++)
+sh tests/phase3b/run_tests.sh   # also needs a C++ compiler (c++)
 ```
 
 Add `--dump-symbols` and/or `--dump-types` to a run to print the symbol table and

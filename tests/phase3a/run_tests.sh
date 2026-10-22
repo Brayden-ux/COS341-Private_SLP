@@ -1,11 +1,9 @@
 #!/bin/sh
 # Usage: tests/phase3a/run_tests.sh   (run from the repository root after compiling to target/classes)
 # For every test program X.txt the compiler must accept it and write target code that
-#  - is exactly X.code (the reviewed translation; run with UPDATE=1 to rewrite the .code files), and
-#  - compiles as C++ once wrapped in a main() that declares the program's sysN variables,
-#    with -pedantic-errors (set CXX to choose the compiler, e.g. CXX=g++ or CXX=g++-13).
-# r* programs are also run: their output must be exactly X.expected.
-# c* programs contain function calls (inlined only in Phase 3b), so they are only compiled.
+#  - is exactly X.code (the reviewed full C++ translation; run with UPDATE=1 to rewrite), and
+#  - compiles as C++ with -pedantic-errors (set CXX to choose the compiler).
+# r* programs are also run and compared with X.expected. c* programs are compile-only.
 cd "$(dirname "$0")" || exit 1
 CP=../../target/classes
 CXX=${CXX:-c++}
@@ -23,21 +21,17 @@ for src in r*.txt c*.txt; do
 $(diff "$name.code" "$TMP/$name.code")"
   fi
   if [ -z "$why" ]; then
-    typ=$(printf '%s\n' "$out" | sed -n 's/.*typ for Phase 3a): //p')
-    {
-      echo '#include <iostream>'
-      echo 'int main()'
-      echo '{'
-      for v in $(grep -o 'sys[0-9]*' "$name.code" | sort -u); do echo "$typ $v ;"; done
-      cat "$name.code"
-      echo 'return 0;'
-      echo '}'
-    } > "$TMP/$name.cpp"
+    cp "$name.code" "$TMP/$name.cpp"
     case $name in
       r*) flags="-pedantic-errors -Wall -Wextra -Werror -Wno-unused-label" ;;
       *) flags="-pedantic-errors -fsyntax-only -Wno-uninitialized -Wno-unused-label" ;;
     esac
-    if ! $CXX -std=c++17 $flags -o "$TMP/$name" "$TMP/$name.cpp" 2>"$TMP/cxx.txt"; then
+    if [ "${name#c}" != "$name" ]; then
+      compile_cmd="$CXX -std=c++17 $flags -fsyntax-only $TMP/$name.cpp"
+    else
+      compile_cmd="$CXX -std=c++17 $flags -o $TMP/$name $TMP/$name.cpp"
+    fi
+    if ! CCACHE_DISABLE=1 sh -c "$compile_cmd" 2>"$TMP/cxx.txt"; then
       why="C++ compilation failed:
 $(cat "$TMP/cxx.txt")"
     fi

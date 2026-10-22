@@ -1,16 +1,20 @@
 package spl.codegen;
 
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.Map;
 import java.util.List;
 import spl.lexer.TokenType;
 import spl.semantic.SymbolTable;
+import spl.semantic.Symbol;
 import spl.semantic.TypeAnalyzer;
 import spl.tree.LeafNode;
 import spl.tree.SyntaxTree;
 import spl.tree.SyntaxTreeNode;
 
 /**
- * Phase 3a: code generation for ALGO, following Prac-Spec-3a and the syntax-directed
+ * Phase 3b: code generation for the complete SPL program, building on Phase 3a and following
+ * Prac-Spec-3b and the syntax-directed
  * translation functions of Chapter 6 of the textbook (Mogensen, Introduction to Compiler Design).
  *
  * Runs after Phase 2b, so the program is known to be correct. One trans method per
@@ -29,8 +33,7 @@ import spl.tree.SyntaxTreeNode;
  * directly after the code; so the false case may simply "fall to the bottom". The spec's
  * "dummy" is exactly this labelF. See docs/PHASE-3a.md for why not, and, or follow from it.
  *
- * Function calls (CALL) are inlined in Phase 3b. Here the arguments are already evaluated into
- * new variables (TransExps of Fig. 6.3) and a comment marks where the inlined code goes.
+ * Functions are emitted as non-executable code-mine comments and expanded at each call site.
  */
 public final class CodeGenerator {
     private static final String NL = "\n";
@@ -39,6 +42,11 @@ public final class CodeGenerator {
     private final SyntaxTree tree;
     private final SymbolTable symbols;
     private final String typ;
+    private final Map<String, FunctionCode> functionCode = new LinkedHashMap<>();
+
+    private record FunctionCode(String declarations, String body, String result) {
+        String code(){ return declarations.isEmpty() ? body : lines(declarations, body); }
+    }
 
     public CodeGenerator(SyntaxTree tree, SymbolTable symbols, TypeAnalyzer types){
         this.tree = tree;
@@ -46,13 +54,62 @@ public final class CodeGenerator {
         this.typ = types.programNumType();
     }
 
-    /** trans(ALGO) of the main program (the ALGO of the outermost P), followed by a new line. */
+    /** Generate function code-mine snippets and the complete executable C++ program. */
     public String generate(){
         SyntaxTreeNode program = tree.child(tree.getRoot(), "P");
         if (program == null) {
             throw new IllegalStateException("the syntax tree has no P node below its root");
         }
-        return transAlgo(tree.child(program, "ALGO")) + NL;
+        SyntaxTreeNode p = program;
+        buildFunctionCode(p);
+        StringBuilder out = new StringBuilder();
+        appendMine(out, p);
+        out.append("#include <iostream>").append(NL)
+                .append("int main()").append(NL).append("{").append(NL);
+        appendVariableDeclarations(out, tree.child(p, "V_DECL"));
+        out.append(transAlgo(tree.child(p, "ALGO"))).append(END)
+                .append("return 0;").append(NL).append("}").append(NL);
+        return out.toString();
+    }
+
+    /** Build nested functions first so calls in a code-mine are already expanded. */
+    private void buildFunctionCode(SyntaxTreeNode p){
+        for (SyntaxTreeNode ftype : functionTypes(tree.child(p, "F_DECL"))) {
+            SyntaxTreeNode childP = tree.child(ftype, "P");
+            buildFunctionCode(childP);
+            LeafNode name = firstNameLeaf(ftype);
+            Symbol symbol = symbols.symbolFor(name.getId());
+            String result = symbol.getReturnKind().equals("num")
+                    ? symbol.getInternalName() + "r" : null;
+            StringBuilder declarations = new StringBuilder();
+            appendVariableDeclarations(declarations, tree.child(ftype, "V_DECL"));
+            appendVariableDeclarations(declarations, tree.child(childP, "V_DECL"));
+            StringBuilder body = new StringBuilder(transAlgo(tree.child(childP, "ALGO")));
+            if (result != null) {
+                body.append(END).append(declare(result)).append(END)
+                        .append(transTerm(tree.child(ftype, "TERM"), result));
+            }
+            functionCode.put(symbol.getInternalName(), new FunctionCode(declarations.toString(), body.toString(), result));
+        }
+    }
+
+    private void appendMine(StringBuilder out, SyntaxTreeNode p){
+        for (SyntaxTreeNode ftype : functionTypes(tree.child(p, "F_DECL"))) {
+            Symbol f = symbols.symbolFor(firstNameLeaf(ftype).getId());
+            FunctionCode fc = functionCode.get(f.getInternalName());
+            out.append("/* code-mine ").append(f.getInternalName()).append(" */").append(NL);
+            // Prefix each line so comments emitted by ALGO cannot close the code-mine.
+            for (String line : fc.code().split("\\n", -1)) {
+                if (!line.isEmpty()) out.append("// ").append(line);
+                out.append(NL);
+            }
+            out.append("/* end code-mine ").append(f.getInternalName()).append(" */").append(NL);
+            appendMine(out, tree.child(ftype, "P"));
+        }
+    }
+
+    private void appendVariableDeclarations(StringBuilder out, SyntaxTreeNode vdecl){
+        for (LeafNode name : declaredNames(vdecl)) out.append(declare(internalName(name))).append(END);
     }
 
     // ALGO and INSTR
@@ -143,12 +200,11 @@ public final class CodeGenerator {
     }
 
     /**
-     * CALL -> NAME ( INPUT ), inlined in Phase 3b. The arguments are translated as Trans_Exps in
-     * Fig. 6.3: each input TERM into its own new variable p1 ... pN. A comment then marks the place
-     * where the function body and, for a term, the assignment place = r of the result will go.
+     * CALL -> NAME ( INPUT ), inlined at this point after evaluating arguments left to right.
      */
     private String transCall(SyntaxTreeNode call, String place){
         List<SyntaxTreeNode> kids = tree.children(call);
+        Symbol callee = symbols.symbolFor(kids.get(0).getId());
         String f = internalName(kids.get(0));
         List<String> code = new ArrayList<>();
         List<String> args = new ArrayList<>();
@@ -159,10 +215,40 @@ public final class CodeGenerator {
             code.add(declare(p));
             code.add(transTerm(tree.children(input).get(0), p));
         }
-        String target = place == null ? "" : place + " = ";
-        code.add("/* " + target + "call " + f + " ( " + String.join(" ", args)
-                + (args.isEmpty() ? "" : " ") + ") : inlined in Phase 3b */");
+        if (callee == null || callee.getKind() != Symbol.Kind.FUNCTION) {
+            throw new IllegalStateException("no function symbol for call " + f);
+        }
+        if (args.size() != callee.getParameters().size()) {
+            throw new IllegalStateException("call to " + callee.getOriginalName() + " has " + args.size()
+                    + " argument(s), but its declaration has " + callee.getParameters().size());
+        }
+        FunctionCode fc = functionCode.get(f);
+        if (fc == null) throw new IllegalStateException("no code-mine generated for " + f);
+        code.add("{");
+        if (!fc.declarations().isEmpty()) code.add(fc.declarations());
+        for (int i = 0; i < args.size(); i++) {
+            code.add(callee.getParameters().get(i).getInternalName() + " = " + args.get(i));
+        }
+        code.add(renameLabels(fc.body()));
+        if (place != null) {
+            if (fc.result() == null) throw new IllegalStateException("void function used as a term: " + f);
+            code.add(place + " = " + fc.result());
+        }
+        code.add("}");
         return lines(code.toArray(new String[0]));
+    }
+
+    private String renameLabels(String code){
+        java.util.regex.Matcher matcher = java.util.regex.Pattern.compile("\\bL[0-9]+\\b").matcher(code);
+        Map<String, String> renamed = new LinkedHashMap<>();
+        StringBuffer out = new StringBuffer();
+        while (matcher.find()) {
+            String old = matcher.group();
+            String fresh = renamed.computeIfAbsent(old, ignored -> newLabel());
+            matcher.appendReplacement(out, java.util.regex.Matcher.quoteReplacement(fresh));
+        }
+        matcher.appendTail(out);
+        return out.toString();
     }
 
     // BRANCH and LOOP
@@ -323,6 +409,35 @@ public final class CodeGenerator {
             throw new IllegalStateException("no internal name for " + name.contents() + " (node " + name.getId() + ")");
         }
         return intern;
+    }
+
+    private List<SyntaxTreeNode> functionTypes(SyntaxTreeNode fdecl){
+        List<SyntaxTreeNode> out = new ArrayList<>();
+        for (SyntaxTreeNode cur = fdecl; cur != null;) {
+            List<SyntaxTreeNode> k = tree.children(cur);
+            if (k.isEmpty()) break;
+            out.add(k.get(0));
+            cur = k.size() > 1 ? k.get(1) : null;
+        }
+        return out;
+    }
+
+    private List<LeafNode> declaredNames(SyntaxTreeNode vdecl){
+        List<LeafNode> out = new ArrayList<>();
+        for (SyntaxTreeNode cur = vdecl; cur != null;) {
+            List<SyntaxTreeNode> k = tree.children(cur);
+            if (k.isEmpty()) break;
+            if (k.get(0) instanceof LeafNode leaf) out.add(leaf);
+            cur = k.size() > 1 ? k.get(1) : null;
+        }
+        return out;
+    }
+
+    private LeafNode firstNameLeaf(SyntaxTreeNode node){
+        for (SyntaxTreeNode child : tree.children(node)) {
+            if (child instanceof LeafNode leaf && leaf.getToken().getType() == TokenType.USER_DEFINED_NAME) return leaf;
+        }
+        throw new IllegalStateException("no function name below node " + node.getId());
     }
 
     private static String lexeme(SyntaxTreeNode leaf){

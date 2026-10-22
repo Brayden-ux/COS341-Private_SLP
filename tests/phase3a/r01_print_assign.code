@@ -1,3 +1,8 @@
+#include <iostream>
+int main()
+{
+int sys1 ;
+int sys2 ;
 std::cout << "hello" ;
 /* nop */ ;
 /* "a,comment.here" */ ;
@@ -25,4 +30,6 @@ std::cout << "," ;
 int v9 ;
 v9 = 0 ;
 std::cout << v9 ;
-/* end */
+/* end */ ;
+return 0;
+}

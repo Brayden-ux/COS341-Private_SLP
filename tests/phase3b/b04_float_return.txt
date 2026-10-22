@@ -1,0 +1,4 @@
+#x :
+num #half ( #n ) { : : return ( div ( #n 2 ) ) } :
+#x = #half ( 7 ) ;
+print ( #x ) ;

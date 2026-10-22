@@ -1,0 +1,8 @@
+#x #y :
+num #sum ( #a #b ) { : : return ( add ( #a #b ) ) }
+num #zero ( ) { : : return ( 7 ) }
+void #show ( #v ) { : : print ( #v ) ; return } :
+#x = #sum ( 2 3 ) ;
+#y = #sum ( #zero ( ) #sum ( 1 2 ) ) ;
+#show ( #x ) ;
+print ( #y ) ;

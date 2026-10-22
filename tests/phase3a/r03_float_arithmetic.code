@@ -1,3 +1,8 @@
+#include <iostream>
+int main()
+{
+float sys1 ;
+float sys2 ;
 float v3 ;
 v3 = 7 ;
 sys1 = v3 ;
@@ -61,4 +66,6 @@ std::cout << "," ;
 float v26 ;
 v26 = -9.01 ;
 std::cout << v26 ;
-/* end */
+/* end */ ;
+return 0;
+}

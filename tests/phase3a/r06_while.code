@@ -1,3 +1,8 @@
+#include <iostream>
+int main()
+{
+int sys1 ;
+int sys2 ;
 int v3 ;
 v3 = 1 ;
 sys1 = v3 ;
@@ -132,4 +137,6 @@ goto L57 ;
 L58 :
 /* exit */ ;
 std::cout << "end" ;
-/* end */
+/* end */ ;
+return 0;
+}

@@ -1,3 +1,8 @@
+#include <iostream>
+int main()
+{
+int sys1 ;
+int sys2 ;
 int v3 ;
 v3 = 0 ;
 sys1 = v3 ;
@@ -144,4 +149,6 @@ L51 :
 int v64 ;
 v64 = sys1 ;
 std::cout << v64 ;
-/* end */
+/* end */ ;
+return 0;
+}

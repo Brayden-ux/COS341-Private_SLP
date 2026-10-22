@@ -183,15 +183,11 @@ L10 : /* continue */ ;
 
 ## Tests
 
-`tests/phase3a/run_tests.sh` (after compiling to `target/classes`, needs a C++ compiler `c++`):
-
-- Each `X.txt` must translate to exactly the reviewed `X.code`.
-- The code, wrapped in `#include <iostream>`, `int main() {`, a `typ sysN ;` for each user
-  variable, and `return 0; }`, must compile as C++17.
-- `r*` programs are compiled with `-Wall -Werror` and run. Their output must equal
-  `X.expected`. The expected outputs were computed with a separate reference interpreter
-  for SPL, not by the generator itself, and spot-checked by hand.
-- `c*` programs contain calls or read unassigned variables, so they are only compiled.
+`tests/phase3a/run_tests.sh` checks the original Phase 3a programs against reviewed full C++
+outputs in `X.code`, compiles them as C++17, and runs the `r*` programs against `X.expected`.
+The target snapshots now include Phase 3b's wrapper and declarations; valid calls are inlined.
+`c*` programs are compile-only. The dedicated Phase 3b runtime and error cases live in
+`tests/phase3b/run_tests.sh`.
 
 The suite covers every INSTR and TERM form, int and float programs, all four loop forms
 (including zero-iteration while/until and the always-once do loops), nested branches and

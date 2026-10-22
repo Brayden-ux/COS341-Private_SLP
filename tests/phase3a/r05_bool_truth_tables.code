@@ -1,3 +1,8 @@
+#include <iostream>
+int main()
+{
+int sys1 ;
+int sys2 ;
 int v3 ;
 v3 = 0 ;
 sys1 = v3 ;
@@ -429,4 +434,6 @@ sys1 = v194 ;
 goto L4 ;
 L5 :
 /* exit */ ;
-/* end */
+/* end */ ;
+return 0;
+}

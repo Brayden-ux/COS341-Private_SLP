@@ -1,3 +1,8 @@
+#include <iostream>
+int main()
+{
+int sys1 ;
+int sys2 ;
 std::cout << "s" ;
 int v3 ;
 v3 = sys1 ;
@@ -87,4 +92,6 @@ v41 = 1 ;
 if ( v40 == v41 ) goto L38 ;
 goto L37 ;
 L38 : /* exit */ ;
-/* end */
+/* end */ ;
+return 0;
+}
